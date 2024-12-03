@@ -88,6 +88,7 @@ public class DashboardController {
         groupVBox.getChildren().add(groupBox);
         }
     }
+<<<<<<< HEAD
 
     
     private void openAddExpensePopup(Group group) {
@@ -115,3 +116,6 @@ public class DashboardController {
     
     
 }
+=======
+}
+>>>>>>> c5a34c6 (Updated code)

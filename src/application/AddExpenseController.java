@@ -24,4 +24,3 @@ public class AddExpenseController {
         // Create and add expense to the group based on splitType
     }
 }
-
