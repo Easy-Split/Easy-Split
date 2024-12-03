@@ -3,32 +3,51 @@ package models;
 public class Member {
     private String name;
     private String email;
-    private double balance; // How much the member owes or is owed
+    private double sharePercentage;
 
     public Member(String name, String email) {
         this.name = name;
         this.email = email;
-        this.balance = 0; // Default balance is 0
-    }
+   }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public double getBalance() {
-        return balance;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void updateBalance(double amount) {
-        this.balance += amount; // This can be positive (credit) or negative (debt)
+    @Override
+    public String toString() {
+        return name + " (" + email + ")";
     }
     
-    
-    public String toString(Member member) {
-        return member != null ? member.getName() : "";  // Display the name of the member
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Member member = (Member) obj;
+        return name != null ? name.equals(member.name) : member.name == null;
+    }
+
+    public double getSharePercentage() {
+        return sharePercentage;
+    }
+
+    public void setSharePercentage(double sharePercentage) {
+        this.sharePercentage = sharePercentage;
+    }
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
 }

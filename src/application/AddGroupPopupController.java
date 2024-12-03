@@ -103,7 +103,7 @@ public class AddGroupPopupController {
             }
 
             members.add(new Member(name, email));
-            newGroup.addMember(name, email);
+            newGroup.addMember(new Member(name, email));
                         
         }
 

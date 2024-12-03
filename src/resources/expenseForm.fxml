@@ -19,11 +19,20 @@
 
     <Label text="Amount" translateX="5.0" />
     <TextField fx:id="amountField" promptText="Enter amount" translateX="2.0" />
-
+   
     <Label text="Members to Split" translateX="5.0" />
     <VBox fx:id="membersVBox" spacing="5">
         <!-- The members will be dynamically added here -->
     </VBox>
+    
+    <Label text="Split by" translateX="5.0" />
+    <ComboBox fx:id="splitMethodComboBox" />
+    
+
+<Label text="Split Details:" />
+    <!-- VBox to hold dynamic input fields for percentages or custom amounts -->
+    <VBox fx:id="splitDetailsVBox" spacing="10" style="-fx-border-color: #cccccc; -fx-padding: 10;" />
+   
 
     <Button fx:id="submitButton" onAction="#handleSubmitExpense" text="Submit" translateX="170.0" translateY="20.0" />
 </VBox>
