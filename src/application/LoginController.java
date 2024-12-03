@@ -24,7 +24,7 @@ public class LoginController {
     private static final String VALID_PASSWORD = "password";
 
     // Handle login
-    public void handleLogin(ActionEvent event) {
+    public void handleLogin(ActionEvent event) throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
@@ -35,9 +35,25 @@ public class LoginController {
             // For now, just close the login window:
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.close();
+            navigateToHomePage();
         } else {
             showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");
         }
+    }
+
+    private void navigateToHomePage() throws IOException {
+        // Load the home page (assuming you have a home.fxml file for the main screen)
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/dashboard.fxml"));
+        Parent homeRoot = loader.load(); // Load the home page
+
+        // Get the current stage (window) and set the scene to the home page
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        Scene homeScene = new Scene(homeRoot);
+
+        // Set the new scene (home page) and show it
+        stage.setScene(homeScene);
+        stage.setTitle("Easy Split - Home");
+        stage.show();
     }
 
     // Navigate to signup screen
