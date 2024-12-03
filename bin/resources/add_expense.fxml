@@ -3,6 +3,7 @@
         <!-- Add CSS for styling if necessary -->
     </stylesheets>
 
+<<<<<<< HEAD
     <VBox alignment="CENTER" spacing="10" layoutX="50" layoutY="50">
         <TextField fx:id="expenseNameField" promptText="Expense Name" />
         <TextField fx:id="amountField" promptText="Amount" />
@@ -23,3 +24,15 @@
         <Button text="Cancel" onAction="#handleCancelExpense" />
     </VBox>
 </AnchorPane>
+=======
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml">
+    <Label text="Add Expense" style="-fx-font-size: 20px;" />
+    <TextField fx:id="amountField" promptText="Amount" />
+    <ComboBox fx:id="paidByDropdown" promptText="Paid By" />
+    <ComboBox fx:id="splitTypeDropdown" promptText="Split Type" />
+    <Button text="Submit" onAction="#handleSubmitExpense" />
+</VBox>
+>>>>>>> c5a34c6 (Updated code)

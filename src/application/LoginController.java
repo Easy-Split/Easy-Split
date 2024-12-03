@@ -33,10 +33,24 @@ public class LoginController {
             showAlert(AlertType.INFORMATION, "Login Successful", "Welcome back, " + username);
             // You can launch the main dashboard here, like open a new window
             // For now, just close the login window:
-            Stage stage = (Stage) usernameField.getScene().getWindow();
-            stage.close();
+            navigateToDashboard(); // Redirects to the dashboard
         } else {
             showAlert(AlertType.ERROR, "Login Failed", "Invalid username or password.");
+        }
+    }
+    
+ // Navigate to Dashboard
+    private void navigateToDashboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/dashboard.fxml"));
+            Parent dashboardRoot = loader.load();
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            Scene dashboardScene = new Scene(dashboardRoot);
+            stage.setScene(dashboardScene);
+            stage.setTitle("Easy Split - Dashboard");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -47,14 +61,15 @@ public class LoginController {
         
         // You can transition to the signup scene here:
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/signup.fxml"));
-        Parent loginRoot = loader.load(); // Load the login page
+        Parent signupRoot = loader.load();
+
 
         // Get the current stage and set the scene to the login page
         Stage stage = (Stage) usernameField.getScene().getWindow();
-        Scene loginScene = new Scene(loginRoot);
+        Scene signupScene = new Scene(signupRoot);
 
         // Set the new scene (login page) and show it
-        stage.setScene(loginScene);
+        stage.setScene(signupScene);
         stage.setTitle("Easy Split - Signup");
         stage.show();
     }
@@ -68,4 +83,3 @@ public class LoginController {
         alert.showAndWait();
     }
 }
-
