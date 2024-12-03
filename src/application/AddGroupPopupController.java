@@ -79,10 +79,12 @@ public class AddGroupPopupController {
 
         if (groupName.isEmpty()) {
             showAlert("Error", "Group name cannot be empty.", AlertType.ERROR);
+            return null;
         }
 
         if (membersVBox == null) {
             showAlert("Error", "At least one member must be added.", AlertType.ERROR);
+            return null;
         }
 
         // Add members to the list (collecting name and email)
@@ -97,6 +99,7 @@ public class AddGroupPopupController {
             // Validate the member details
             if (name.isEmpty() || email.isEmpty()) {
                 showAlert("Error", "All member fields must be filled.", AlertType.ERROR);
+                return null;
             }
 
             members.add(new Member(name, email));

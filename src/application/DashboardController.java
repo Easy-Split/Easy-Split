@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import models.Expense;
 import models.Group;
 import javafx.scene.Scene;
 
@@ -37,6 +38,8 @@ public class DashboardController {
             }
         }
     }
+    
+    
 
     @FXML
     private void handleAddGroup() {
@@ -72,25 +75,43 @@ public class DashboardController {
         Text groupNameText = new Text(group.getName());
         
         // Add a button to manage the group (e.g., Edit, Delete, etc.)
-        Button manageButton = new Button("Manage");
+        Button manageButton = new Button("Add Expense");
         manageButton.setOnAction(event -> {
-            // Handle group management logic here
-            showAlert("Group management", "Managing group: " + group.getName());
+        	openAddExpensePopup(group);
         });
         
         // Add the text and button to the HBox
+        if(groupNameText != null ) {
         groupBox.getChildren().addAll(groupNameText, manageButton);
         
         // Add the HBox to the VBox
         groupVBox.getChildren().add(groupBox);
+        }
     }
 
-    // Helper method to show alerts
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
+    
+    private void openAddExpensePopup(Group group) {
+        try {
+            // Load the Add Expense Popup FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/expenseForm.fxml"));
+            Parent root = loader.load();
+            
+            // Get the controller for the Add Expense form
+            AddExpensePopupController popupController = loader.getController();
+            popupController.initialize(group); 
+
+            // Show the popup in a new window
+            Stage stage = new Stage();
+            stage.setTitle("Add Expense");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // Make it modal
+            stage.show();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+    
+    
 }
