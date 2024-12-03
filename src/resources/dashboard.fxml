@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<<<<<<< HEAD
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="application.DashboardController">
 
     <!-- Header with title and buttons -->
@@ -31,11 +30,3 @@
     </VBox>
 
 </AnchorPane>
-=======
-<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="application.DashboardController">
-    <Label style="-fx-font-size: 20px;" text="EasySplit - Dashboard" />
-    <ListView fx:id="groupList" prefHeight="400.0" prefWidth="700.0" />
-    <Button onAction="#handleAddGroup" text="Add Group" />
-    <Button onAction="#handleAddExpense" text="Add Expense" />
-</VBox>
->>>>>>> c5a34c6 (Updated code)
