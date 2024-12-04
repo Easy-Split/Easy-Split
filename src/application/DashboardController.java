@@ -102,6 +102,34 @@ public class DashboardController {
         groupVBox.getChildren().add(groupBox);
         }
     }
+    
+    
+    @FXML
+    private void handleLogout() {
+        try {
+            // Load the login page FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/login.fxml"));
+            Parent loginRoot = loader.load();
+
+            // Get the current stage (window) and set the scene to the login page
+            Stage stage = (Stage) addGroupButton.getScene().getWindow();
+            Scene loginScene = new Scene(loginRoot);
+            stage.setScene(loginScene);
+            stage.setTitle("Easy Split - Login");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Navigation Error", "Failed to load the login page.");
+        }
+    }
+
+    private void showAlert(AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     
     private void openEditGroupPopup(Group group, HBox groupBox) {
