@@ -24,4 +24,12 @@ public class MemberBalance {
     public DoubleProperty getBalanceProperty() {
         return new SimpleDoubleProperty(balance);
     }
+    
+    public Member getMember() {
+        return member;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 }

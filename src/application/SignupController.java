@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignupController {
 
@@ -18,6 +20,8 @@ public class SignupController {
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmPasswordField;
+
+    private static final String[] existingEmails = {"test@example.com", "user@domain.com"};
 
     // Handle signup
     public void handleSignup(ActionEvent event) throws IOException {
@@ -32,6 +36,25 @@ public class SignupController {
             return;
         }
 
+        // Validate email format
+        if (!isValidEmail(email)) {
+            showAlert(AlertType.ERROR, "Signup Failed", "Please enter a valid email format.");
+            return;
+        }
+
+        // Check if email already exists
+        if (isEmailAlreadyRegistered(email)) {
+            showAlert(AlertType.ERROR, "Signup Failed", "Email already exists.");
+            return;
+        }
+
+        // Validate password strength
+        if (!isValidPassword(password)) {
+            showAlert(AlertType.ERROR, "Signup Failed", "Password must be at least 8 characters, including an uppercase letter, a number, and a special character.");
+            return;
+        }
+
+        // Validate password confirmation
         if (!password.equals(confirmPassword)) {
             showAlert(AlertType.ERROR, "Signup Failed", "Passwords do not match.");
             return;
@@ -75,7 +98,7 @@ public class SignupController {
     // Navigate back to login screen (if you have a button to go back)
     public void goToLogin(ActionEvent event) throws IOException {
         // Load the login page (assuming login.fxml is available)
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/login.fxml"));
         Parent loginRoot = loader.load(); // Load the login page
 
         // Get the current stage and set the scene to the login page
@@ -86,5 +109,31 @@ public class SignupController {
         stage.setScene(loginScene);
         stage.setTitle("Easy Split - Login");
         stage.show();
+    }
+
+    // Validate email format using regular expression
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    // Check if the email already exists (Simulated check)
+    private boolean isEmailAlreadyRegistered(String email) {
+        for (String existingEmail : existingEmails) {
+            if (existingEmail.equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Validate password strength
+    private boolean isValidPassword(String password) {
+        String passwordRegex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        Pattern pattern = Pattern.compile(passwordRegex);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 }

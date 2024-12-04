@@ -152,7 +152,7 @@ public class DashboardController {
             // After the popup is closed, refresh the dashboard if the group was modified
             for (Node node : groupBox.getChildren()) {
                 if (node instanceof Text) {
-                    ((Text) node).setText(group.getGroupName()); // Update group name
+                    ((Text) node).setText(group.getGroupName()); 
                     break;
                 }
             }        } catch (IOException e) {
