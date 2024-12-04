@@ -1,14 +1,25 @@
 package models;
 
 public class Member {
+	private int memberID;
     private String name;
     private String email;
     private double sharePercentage;
 
     public Member(String name, String email) {
+        this.memberID = memberID;
         this.name = name;
         this.email = email;
-   }
+    }
+    
+    public int getMemberID() {
+        return memberID;
+    }
+
+    public void setMemberID(int memberID) {
+        this.memberID = memberID;
+    }
+
 
     public String getName() {
         return name;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Group {
-
+	private int groupId;
     private String groupName;
     private List<Member> members;  // List of members in the group
     private List<Expense> expenses; // List of expenses in the group
@@ -17,7 +17,13 @@ public class Group {
         this.expenses = new ArrayList<>();
     }
 
-    // Getters and Setters
+    public Group(int groupID, String groupName) {
+        this.groupId = groupID;
+        this.groupName = groupName;
+    }
+   
+
+	// Getters and Setters
     public String getGroupName() {
         return groupName;
     }
@@ -52,4 +58,14 @@ public class Group {
 	 public boolean removeMember(Member member) {
 	        return members.remove(member);
 	    }
+	 
+	 public int getGroupID() {
+	        return groupId;
+	    }
+	 
+	public void setGroupID(int groupId) {
+		// TODO Auto-generated method stub
+		this.groupId= groupId;
+		
+	}
 }
