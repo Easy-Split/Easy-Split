@@ -26,7 +26,7 @@ public class LoginController {
     private PasswordField passwordField;
 
     // Handle login
-    public void handleLogin(ActionEvent event) {
+    public void handleLogin(ActionEvent event) throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
@@ -40,28 +40,16 @@ public class LoginController {
         if (authenticateUser(username, password)) {
             showAlert(Alert.AlertType.INFORMATION, "Login Successful", "Welcome back, " + username);
             navigateToDashboard(); // Navigate to the dashboard
+       
+            
         } else {
             showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid username or password.");
         }
     }
+
     
-    private void handleLoginSuccess(int userId) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard.fxml"));
-            Parent root = loader.load();
-
-            // Pass UserID to the DashboardController
-            DashboardController dashboardController = loader.getController();
-            dashboardController.setCurrentUserId(userId);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    
+    
 
     // Authenticate user credentials with the database
     private boolean authenticateUser(String username, String password) {
@@ -98,21 +86,26 @@ public class LoginController {
     }
 
     // Navigate to signup screen
-    public void goToSignup(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/signup.fxml"));
-            Parent signupRoot = loader.load();
 
-            Stage stage = (Stage) usernameField.getScene().getWindow();
-            Scene signupScene = new Scene(signupRoot);
+    
 
-            stage.setScene(signupScene);
-            stage.setTitle("Easy Split - Signup");
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Unable to navigate to the signup page.");
-        }
+    public void goToSignup(ActionEvent event) throws IOException {
+        // Implement logic to show the signup screen (e.g., load signup.fxml)
+        System.out.println("Navigating to Signup screen...");
+        
+        // You can transition to the signup scene here:
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/signup.fxml"));
+        Parent loginRoot = loader.load(); // Load the login page
+
+        // Get the current stage and set the scene to the login page
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        Scene loginScene = new Scene(loginRoot);
+
+        // Set the new scene (login page) and show it
+        stage.setScene(loginScene);
+        stage.setTitle("Easy Split - Signup");
+        stage.show();
+
     }
 
     // Show alert message

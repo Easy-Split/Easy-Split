@@ -107,6 +107,34 @@ public class DashboardController {
             groupVBox.getChildren().add(groupBox);
         }
     }
+    
+    
+    @FXML
+    private void handleLogout() {
+        try {
+            // Load the login page FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/login.fxml"));
+            Parent loginRoot = loader.load();
+
+            // Get the current stage (window) and set the scene to the login page
+            Stage stage = (Stage) addGroupButton.getScene().getWindow();
+            Scene loginScene = new Scene(loginRoot);
+            stage.setScene(loginScene);
+            stage.setTitle("Easy Split - Login");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Navigation Error", "Failed to load the login page.");
+        }
+    }
+
+    private void showAlert(AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     private void openEditGroupPopup(Group group, HBox groupBox) {
         try {
@@ -128,7 +156,7 @@ public class DashboardController {
             // After the popup is closed, refresh the dashboard if the group was modified
             for (Node node : groupBox.getChildren()) {
                 if (node instanceof Text) {
-                    ((Text) node).setText(group.getGroupName()); // Update group name
+                    ((Text) node).setText(group.getGroupName()); 
                     break;
                 }
             }
@@ -228,15 +256,7 @@ public class DashboardController {
             showAlert(AlertType.ERROR, "Database Error", "Failed to save group and members to the database.");
         }
     }
-    
- // Add the showAlert method at the bottom of the class
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+
 
 	public void setCurrentUserId(int userId) {
 		// TODO Auto-generated method stub
@@ -246,4 +266,3 @@ public class DashboardController {
 
 	
 }
-
