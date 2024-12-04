@@ -20,7 +20,6 @@ import models.Member;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -163,6 +162,11 @@ public class AddExpensePopupController {
             return;
         }
 
+        if (dateText == null) {
+            showAlert("Error", "Please select a date.", AlertType.ERROR);
+            return;
+        }
+
         // Collect selected members to split the cost
         List<Member> membersToSplit = getSelectedMembersForSplit();
 
@@ -172,12 +176,9 @@ public class AddExpensePopupController {
         }
 
         // Split the expense based on the selected method
-       // Map<Member, Double> splits = splitExpense(amount, membersToSplit);
-        
-        // Validate the split method
-        String splitMethod = splitMethodComboBox.getValue();
         Map<Member, Double> splits = new HashMap<>();
 
+        String splitMethod = splitMethodComboBox.getValue();
         switch (splitMethod) {
             case "Equal":
                 splits = splitEqually(amount, membersToSplit);
@@ -200,7 +201,7 @@ public class AddExpensePopupController {
         }
 
         // Create a new expense object using the constructor
-        Expense expense = new Expense(expenseName,amount, payer,membersInvolved, splits, dateText);
+        Expense expense = new Expense(expenseName, amount, payer, membersInvolved, splits, dateText);
 
         // Add the expense to the group
         group.addExpense(expense);
@@ -208,26 +209,6 @@ public class AddExpensePopupController {
         // Show a success message and close the popup
         showAlert("Success", "Expense added successfully!", AlertType.INFORMATION);
         closeWindow();
-    }
-
-    // Method to split the expense based on the selected method
-    private Map<Member, Double> splitExpense(double amount, List<Member> membersToSplit) {
-        Map<Member, Double> splits = new HashMap<>();
-        String splitMethod = splitMethodComboBox.getValue();
-
-        switch (splitMethod) {
-            case "Equal":
-                splits = splitEqually(amount, membersToSplit);
-                break;
-            case "Percentage":
-                splits = splitByPercentage(amount, membersToSplit);
-                break;
-            case "Custom":
-                splits = splitByCustomAmount(amount, membersToSplit);
-                break;
-        }
-
-        return splits;
     }
 
     // Split the expense equally among all members
@@ -271,13 +252,7 @@ public class AddExpensePopupController {
         if (totalPercentage != 100) {
             showAlert("Error", "Total percentage must add up to 100%.", AlertType.ERROR);
             return splits;
-        } 
-        
-        if (totalPercentage > 100) {
-            showAlert("Error", "Total percentage must add up only to 100%.", AlertType.ERROR);
-            return splits;
-        } 
-        
+        }
 
         // Calculate the amounts for each member based on the percentages
         int i = 0;
@@ -290,12 +265,12 @@ public class AddExpensePopupController {
         return splits;
     }
 
-    // Split the expense based on custom amounts
+    // Split the expense by custom amounts
     private Map<Member, Double> splitByCustomAmount(double amount, List<Member> membersToSplit) {
         Map<Member, Double> splits = new HashMap<>();
-        double totalAmount = 0;
+        double totalCustomAmount = 0;
 
-        // Gather amounts from the UI inputs
+        // Gather custom amounts from the UI inputs
         List<Double> customAmounts = new ArrayList<>();
         for (Node node : splitDetailsVBox.getChildren()) {
             if (node instanceof HBox) {
@@ -305,7 +280,7 @@ public class AddExpensePopupController {
                         try {
                             double customAmount = Double.parseDouble(((TextField) child).getText());
                             customAmounts.add(customAmount);
-                            totalAmount += customAmount;
+                            totalCustomAmount += customAmount;
                         } catch (NumberFormatException e) {
                             showAlert("Error", "Invalid custom amount entered.", AlertType.ERROR);
                             return splits;
@@ -315,13 +290,13 @@ public class AddExpensePopupController {
             }
         }
 
-        // Ensure that the total custom amount adds up to the total expense amount
-        if (totalAmount != amount) {
-            showAlert("Error", "The total custom amounts must equal the total expense amount.", AlertType.ERROR);
+        // Ensure that the total custom amounts add up to the total expense amount
+        if (totalCustomAmount != amount) {
+            showAlert("Error", "Total custom amounts must equal the expense amount.", AlertType.ERROR);
             return splits;
         }
 
-        // Assign custom amounts to each member
+        // Assign the custom amounts to each member
         int i = 0;
         for (Member member : membersToSplit) {
             double customAmount = customAmounts.get(i++);
@@ -331,10 +306,24 @@ public class AddExpensePopupController {
         return splits;
     }
 
-    // Get selected members from the checkboxes
+    // Display an alert with a specific message
+    private void showAlert(String title, String message, AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // Close the popup window after submission
+    private void closeWindow() {
+        Stage stage = (Stage) submitButton.getScene().getWindow();
+        stage.close();
+    }
+
+    // Get selected members for splitting the expense
     private List<Member> getSelectedMembersForSplit() {
         List<Member> selectedMembers = new ArrayList<>();
-
         for (Node node : membersVBox.getChildren()) {
             if (node instanceof HBox) {
                 HBox hbox = (HBox) node;
@@ -348,22 +337,6 @@ public class AddExpensePopupController {
                 }
             }
         }
-
         return selectedMembers;
-    }
-
-    // Show an alert with the specified title and message
-    private void showAlert(String title, String message, AlertType type) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    // Close the current window
-    private void closeWindow() {
-        Stage stage = (Stage) submitButton.getScene().getWindow();
-        stage.close();
     }
 }

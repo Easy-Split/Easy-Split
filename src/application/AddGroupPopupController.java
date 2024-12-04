@@ -1,6 +1,5 @@
 package application;
 
-
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -16,6 +15,8 @@ import models.Member;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AddGroupPopupController {
 
@@ -26,22 +27,21 @@ public class AddGroupPopupController {
     private VBox membersVBox;
 
     private List<Member> members;
-    
+
     @FXML
     private Button addMemberButton;
 
     @FXML
     private Button saveGroupButton;
-    
-    private ObservableList<Group> groups;
 
+    private ObservableList<Group> groups;
 
     // Initialize the controller
     @FXML
     private void initialize() {
         members = new ArrayList<>();
     }
-    
+
     // No-argument constructor (this is required by JavaFX FXML loader)
     public AddGroupPopupController() {
         // You can leave this empty if you don't need any special setup
@@ -74,15 +74,14 @@ public class AddGroupPopupController {
     @FXML
     public Group handleSubmitGroup() {
         String groupName = groupNameField.getText();
-    	Group newGroup = new Group(groupName);
-
+        Group newGroup = new Group(groupName);
 
         if (groupName.isEmpty()) {
             showAlert("Error", "Group name cannot be empty.", AlertType.ERROR);
             return null;
         }
 
-        if (membersVBox == null) {
+        if (membersVBox == null || membersVBox.getChildren().isEmpty()) {
             showAlert("Error", "At least one member must be added.", AlertType.ERROR);
             return null;
         }
@@ -102,20 +101,29 @@ public class AddGroupPopupController {
                 return null;
             }
 
+            if (!isValidEmail(email)) {
+                showAlert("Error", "Please enter a valid email address.", AlertType.ERROR);
+                return null;
+            }
+
             members.add(new Member(name, email));
             newGroup.addMember(new Member(name, email));
-                        
         }
 
         // Proceed with further action, like saving the group and members or navigating
         // In this example, we simply show a success message        
         // Close the window
         closeWindow();
-		return newGroup;
-        
+        return newGroup;
     }
-    
 
+    // Email validation using regular expression
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
     // Handles the cancel action (clear the form and close the window)
     @FXML
@@ -142,6 +150,4 @@ public class AddGroupPopupController {
         Stage stage = (Stage) groupNameField.getScene().getWindow();
         stage.close();
     }
-
-  
 }
