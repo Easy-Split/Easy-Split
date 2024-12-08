@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-public class Expense {
+public class Expense extends AbstractExpense{
     private String name;
     private double amount;
     private Member payer;
@@ -20,12 +20,7 @@ public class Expense {
     
     // Constructor, getters, and setters
     public Expense(String name, double amount, Member payer, List<Member> membersInvolved, Map<Member, Double> splits, LocalDate date) {
-        this.name = name;
-        this.amount = amount;
-        this.payer = payer;
-        this.membersInvolved = membersInvolved;
-        this.splits = splits;
-        this.date = date;
+    	 super(name, amount, payer, membersInvolved, splits, date);
     }
 
     // Getters
@@ -77,5 +72,9 @@ public class Expense {
     public StringProperty getDateProperty() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");  // Format date as string
         return new SimpleStringProperty(date.format(formatter));
+    }
+    
+    public void addSplit(Member member, double amount) {
+        splits.put(member, amount);
     }
 }
